@@ -1,0 +1,13 @@
+Project too build a authentication web-service and apply authentication protocols.
+
+Run as:
+./index.js [ -t|--auth-time AUTH_TIME ] [ -d|--ssl-dir SSL_DIR ] PORT
+where,
+-t | --auth-time The time in seconds before an authentication token times
+out. If not specified, the value=300 seconds.
+-d | --ssl-dir The path to the directory containing SSL credential key.pem and cert.pem. If not specified, the value should default to the directory from which the server was started.
+
+Services:
+1. PUT /users/ID?pw=PASSWORD
+2. PUT /users/ID/auth
+3. GET /users/ID

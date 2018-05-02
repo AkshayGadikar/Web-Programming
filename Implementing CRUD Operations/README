@@ -1,0 +1,47 @@
+Project implemented using NodeJS and mongoDB.
+Implemented CRUD operations on database - (Create, Read, Update, Delete)
+
+Run as:
+$ db_ops.js DB_URL OP
+
+DB_URL is the URL for a mongo database instance and OP is a JSON string
+OP specifies the CRUD operation which is being performed on the database
+specifies by DB_URL. It must have the following top-level members:
+op Must have a value which must be one of "create", "read", "update" or
+"delete". 
+
+Sample Log:
+
+#create env var for DB URL (use setenv URL mongodb... for csh variants).
+$ export URL=mongodb://localhost:27017/test_db
+#run mongo shell to show test collection in db is currently empty
+$ mongo --eval 'db.test.find({})' test_db
+MongoDB shell version: 3.2.11
+connecting to: test_db
+#list out file to be used for inserting entries
+$ cat create.json
+{
+"op": "create",
+"collection": "test",
+"args": [
+{ "a": 1 },
+{ "b": 2 },
+{ "c": 3 }
+]
+}
+
+#add entries to test
+$ ./db_ops.js $URL "`cat create.json`"
+#run mongo shell to show entries were inserted
+$ mongo --eval 'db.test.find({})' test_db
+MongoDB shell version: 3.2.11
+connecting to: test_db
+{ "_id" : ObjectId("59ac8f45557cf41ebdacaff1"), "a" : 1 }
+{ "_id" : ObjectId("59ac8f45557cf41ebdacaff2"), "b" : 2 }
+{ "_id" : ObjectId("59ac8f45557cf41ebdacaff3"), "c" : 3 }
+
+#use a read op to show entries inserted
+$ ./db_ops.js $URL '{"op": "read", "collection": "test" }'
+{ _id: 59ac8f45557cf41ebdacaff1, a: 1 }
+{ _id: 59ac8f45557cf41ebdacaff2, b: 2 }
+{ _id: 59ac8f45557cf41ebdacaff3, c: 3 }
